@@ -1,6 +1,7 @@
 
 from pathlib import Path
 import os
+import dj_database_url
 from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -73,16 +74,10 @@ WSGI_APPLICATION = 'E_commerce.wsgi.application'
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': os.environ['DB_PASSWORD_YO'],
-        'HOST': 'altaria.proxy.rlwy.net',
-        'PORT': '41056',
-    }
+    'default': dj_database_url.config(
+        default=os.environ.get('DATABASE_URL', 'postgresql://localhost/ecommerce')
+    )
 }
-#wvrOWYerEKotMdwlHYnkTXIcpOgzniTY
 
 
 # Password validation
