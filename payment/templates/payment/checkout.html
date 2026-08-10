@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Choose What You Want</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Shopping Make you Happy. So explore....</p>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <h2 class="my-5 text-center">Checkout</h2>
+           
+            {% if cart_products %}
+                {% for product in cart_products %}
+                    product Name : {{ product.name }}
+                    <img src="{{ product.image.url }}" alt="" width="100" height="100" class="card inline-block">
+                    {% if product.is_sale %}
+                        Price: ${{ product.sale_price }} On Sale
+                    {% else %}
+                        Price: ${{ product.price }}
+                    {% endif %}
+                    <br>
+                    <!----Quantity-->
+                    {% for key, value in cart_qty.items %}
+                        {% if key == product.id|slugify %}
+                            Quatntiy : {{ value }}
+                        {% endif %}
+                    {% endfor %}
+                    <br>
+                    <a href="{% url 'cart_summary' %}"><button class="btn btn-secondary">Upadate Itme</button></a>
+                    <br><br>
+                {% endfor %}
+            {% endif %}
+               <!--Total-->
+                    <h3>${{ cart_total }}</h3>
+                    <br>
+            <h3>Shiiping Info</h3>
+            <div class="card-body">
+                <form method="POST" action="{% url 'billing_info' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <br>
+                    <button type="submit" class="btn btn-danger">Billing</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}

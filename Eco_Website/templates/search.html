@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content%}
+
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Choose What You Want</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Shopping Make you Happy. So explore....</p>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row">
+        <center>
+            <div class="col-8 my-5">
+                <p class="my-5 text-justify" style="text-align:justify">
+                    Search Page</p>
+                <div class="card text-center ">
+                    <div class="card-header">
+                        Featured
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{% url 'search' %}">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <input type="text" class="form-control" name="searched" placeholder="Search">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                        {% if searched %}
+                        <h4>All items found realated with {{ searched }}</h4>
+                            {% for product in products %}
+                                <div class="card" style="width: 18rem;">
+                                    <img src="{{ product.image.url }}" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">{{ product.name }}</h5>
+                                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                                        <a href="{% url 'product' product.id %}" class="btn btn-primary">View Product</a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        
+                    </div>
+                </div>
+            </div>
+        </center>
+{% endblock %}

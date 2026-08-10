@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Header-->
+<header class="bg-dark py-5">
+    <div class="container px-4 px-lg-5 my-5">
+        <div class="text-center text-white">
+            <h1 class="display-4 fw-bolder">Choose What You Want</h1>
+            <p class="lead fw-normal text-white-50 mb-0">Shopping Make you Happy. So explore....</p>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-8">
+            <h2 class="my-5 text-center">Billing Information</h2>
+           
+            {% if cart_products %}
+                {% for product in cart_products %}
+                    product Name : {{ product.name }}
+                    <img src="{{ product.image.url }}" alt="" width="100" height="100" class="card inline-block">
+                    {% if product.is_sale %}
+                        Price: ${{ product.sale_price }} On Sale
+                    {% else %}
+                        Price: ${{ product.price }}
+                    {% endif %}
+                    <br>
+                    <!----Quantity-->
+                    {% for key, value in cart_qty.items %}
+                        {% if key == product.id|slugify %}
+                            Quatntiy : {{ value }}
+                        {% endif %}
+                    {% endfor %}
+                    <br>
+                    <a href="{% url 'cart_summary' %}"><button class="btn btn-secondary">Upadate Itme</button></a>
+                    <br><br>
+                {% endfor %}
+            {% endif %}
+               <!--Total-->
+                    <h3>${{ cart_total }}</h3>
+                    <br>
+            <h3>Shipping Info</h3>
+            <div class="card-body">
+                    Name : {{ shipping_form.shipping_full_name }}<br>
+                    Email : {{ shipping_form.shipping_email }}<br>
+                    Address : {{ shipping_form.shipping_address }}<br>
+                    City : {{ shipping_form.shipping_city }}<br>
+                    State : {{ shipping_form.shipping_state }}<br>
+                    Zipcode : {{ shipping_form.shipping_zipcode }}<br>
+                    Country : {{ shipping_form.shipping_country }}<br>
+            </div>
+            <br>
+            <br>
+            <h3>Billing Form</h3>
+            <form method="POST" action="{% url 'process_order' %}">
+            {% csrf_token %}
+            {{ billing_form.as_p }}
+            <br><br>
+            <button class="btn btn-danger" type="submit">Pay Now</button></a>
+            <br><br>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock%}

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container">
+    <div class="row">
+        <center>
+            <div class="col-8">
+                <h1>Payment</h1><br><br>
+                   <div class="card">
+                        Order {{ order.id }} - ${{ order.amount_paid }}<br>
+                        {% if order.shipped %}
+                            Date Shipped : {{ order.date_ship }}<br>
+                        {% else %}
+                            Date Order : {{ order.order_date }}<br>
+                        {% endif %}
+                            full_name = {{ order.full_name }}<br>
+                            email = {{ order.email}}<br>
+                            shipping_address = {{ order.shipping_address }}<br>
+                            amount_paid = {{ order.amount_paid}}<br>
+                        {% for item in items %}
+                            Itme : {{ item.product }}, Quantity : {{ item.quantity }}<br>
+                        {% endfor %}
+                        <br>
+                        <form method="POST">
+                            {% if order.shipped %}
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="false">
+                                <button class="btn btn-danger" type="submit">Make Unship</button>
+                            {% else %}
+                                {% csrf_token %}
+                                <input type="hidden" name="status" value="true">
+                                <button class="btn btn-primary" type="submit" >Make Shipped</button>
+                            {% endif %}
+                        </form>
+                   </div>
+            </div><br><br>
+        </center>
+    </div>
+</div>
+{% endblock content %}
