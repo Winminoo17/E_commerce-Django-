@@ -82,7 +82,6 @@ DATABASES = {
         'PORT': '41056',
     }
 }
-#wvrOWYerEKotMdwlHYnkTXIcpOgzniTY
 
 
 # Password validation
